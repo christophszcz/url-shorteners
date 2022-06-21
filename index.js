@@ -20,5 +20,5 @@ app.get('/api/hello', function(req, res) {
 });
 
 app.listen(port, function() {
-  console.log(`Listening on port ${port}`);
+  console.log('Your app is here: ' + `http://localhost:${port}`);
 });
