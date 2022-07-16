@@ -42,3 +42,7 @@ input[type='text'] {
   width: 220px;
   text-align: center;
 }
+
+.footer {
+	margin-top: 40px;
+}
