@@ -10,13 +10,19 @@ app.use(cors());
 
 app.use('/public', express.static(`${process.cwd()}/public`));
 
+// Parse JSON bodies
+app.use(express.json());
+app.use(express.urlencoded());
+
 app.get('/', function(req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
-// Your first API endpoint
-app.get('/api/hello', function(req, res) {
-  res.json({ greeting: 'hello API' });
+app.post('/api/shorturl', function(req, res) {
+  const urlResponse = { original_url: undefined, short_url: 1 };
+  urlResponse.original_url = req.body.url;
+  urlResponse.short_url = 1;
+  res.json(urlResponse);
 });
 
 app.listen(port, function() {
