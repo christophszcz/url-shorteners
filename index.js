@@ -19,10 +19,12 @@ app.get('/', function(req, res) {
 });
 
 app.post('/api/shorturl', function(req, res) {
-  const urlResponse = { original_url: undefined, short_url: 1 };
-  urlResponse.original_url = req.body.url;
-  urlResponse.short_url = 1;
-  res.json(urlResponse);
+  if (res.statusCode == 200) {
+    const urlResponse = { original_url: undefined, short_url: 1 };
+    urlResponse.original_url = req.body.url;
+    urlResponse.short_url = 1;
+    res.json(urlResponse);
+  }
 });
 
 app.listen(port, function() {
