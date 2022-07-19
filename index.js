@@ -3,6 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+let inputUrls = {};
+let shortUrlValue = 0;
+
 // Basic Configuration
 const port = process.env.PORT || 3000;
 
@@ -20,9 +23,12 @@ app.get('/', function(req, res) {
 
 app.post('/api/shorturl', function(req, res) {
   if (res.statusCode == 200) {
-    const urlResponse = { original_url: undefined, short_url: 1 };
+    const urlResponse = { original_url: undefined, short_url: undefined };
     urlResponse.original_url = req.body.url;
-    urlResponse.short_url = 1;
+    urlResponse.short_url = shortUrlValue;
+    let urlValue = urlResponse.original_url;
+    inputUrls[urlValue] = urlResponse.short_url;
+    shortUrlValue++;
     res.json(urlResponse);
   }
 });
