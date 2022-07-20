@@ -26,11 +26,15 @@ app.post('/api/shorturl', function(req, res) {
     const urlResponse = { original_url: undefined, short_url: undefined };
     urlResponse.original_url = req.body.url;
     urlResponse.short_url = shortUrlValue;
-    let urlValue = urlResponse.original_url;
-    inputUrls[urlValue] = urlResponse.short_url;
+    let urlValue = urlResponse.short_url;
+    inputUrls[urlValue] = urlResponse.original_url;
     shortUrlValue++;
     res.json(urlResponse);
   }
+});
+
+app.get('/api/shorturl/:short_url?', function(req, res) {
+  res.redirect(`${inputUrls[req.params.short_url]}`);
 });
 
 app.listen(port, function() {
