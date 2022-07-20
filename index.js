@@ -34,7 +34,13 @@ app.post('/api/shorturl', function(req, res) {
 });
 
 app.get('/api/shorturl/:short_url?', function(req, res) {
-  res.redirect(`${inputUrls[req.params.short_url]}`);
+  const shortUrl = req.params.short_url;
+  const hasShortUrlProperty = inputUrls.hasOwnProperty(req.params.short_url);
+  if (res.statusCode == 200 && shortUrl && hasShortUrlProperty) {
+    res.redirect(`${inputUrls[req.params.short_url]}`);
+  } else {
+    res.json({ error: 'Invalid short URL' });
+  }
 });
 
 app.listen(port, function() {
