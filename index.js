@@ -22,7 +22,11 @@ app.get('/', function(req, res) {
 });
 
 app.post('/api/shorturl', function(req, res) {
-  if (res.statusCode == 200) {
+  const okStatus = res.statusCode == 200;
+  // Setup dummy validation
+  // add url validation library
+  const validUrl = req.body.url === 'https://freecodecamp.org';
+  if (okStatus && validUrl) {
     const urlResponse = { original_url: undefined, short_url: undefined };
     urlResponse.original_url = req.body.url;
     urlResponse.short_url = shortUrlValue;
@@ -30,16 +34,20 @@ app.post('/api/shorturl', function(req, res) {
     inputUrls[urlValue] = urlResponse.original_url;
     shortUrlValue++;
     res.json(urlResponse);
+  } else {
+    res.json({ error: 'invalid url' });
   }
 });
 
 app.get('/api/shorturl/:short_url?', function(req, res) {
+  const okStatus = res.statusCode == 200;
   const shortUrl = req.params.short_url;
-  const hasShortUrlProperty = inputUrls.hasOwnProperty(req.params.short_url);
-  if (res.statusCode == 200 && shortUrl && hasShortUrlProperty) {
+  const hasShortUrlProperty = inputUrls.hasOwnProperty(shortUrl);
+
+  if (okStatus && shortUrl && hasShortUrlProperty) {
     res.redirect(`${inputUrls[req.params.short_url]}`);
   } else {
-    res.json({ error: 'Invalid short URL' });
+    res.json({ error: 'invalid url' });
   }
 });
 
