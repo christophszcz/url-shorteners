@@ -2,6 +2,7 @@ require('dotenv').config();
 const { URL } = require('url');
 const express = require('express');
 const cors = require('cors');
+const helpers = require('./utils/helper.js');
 const app = express();
 
 let inputUrls = {};
@@ -24,9 +25,7 @@ app.get('/', function(req, res) {
 
 app.post('/api/shorturl', function(req, res) {
   const okStatus = res.statusCode == 200;
-  // Setup dummy validation
-  // add url validation library
-  const isValidUrl = stringIsAValidUrl(req.body.url, ['http', 'https']);
+  const isValidUrl = helpers.stringIsAValidUrl(req.body.url, ['http', 'https']);
   if (okStatus && isValidUrl) {
     const urlResponse = { original_url: undefined, short_url: undefined };
     urlResponse.original_url = req.body.url;
@@ -51,20 +50,6 @@ app.get('/api/shorturl/:short_url?', function(req, res) {
     res.json({ error: 'invalid url' });
   }
 });
-
-
-const stringIsAValidUrl = (string, protocols) => {
-  try {
-    url = new URL(string);
-    return protocols
-      ? url.protocol
-        ? protocols.map(x => `${x.toLowerCase()}:`).includes(url.protocol)
-        : false
-      : true;
-  } catch (err) {
-    return false;
-  }
-};
 
 app.listen(port, function() {
   console.log('Your app is here: ' + `http://localhost:${port}`);
