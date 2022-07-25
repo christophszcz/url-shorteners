@@ -26,6 +26,7 @@ app.get('/', function(req, res) {
 app.post('/api/shorturl', function(req, res) {
   const okStatus = res.statusCode == 200;
   const isValidUrl = helpers.stringIsAValidUrl(req.body.url, ['http', 'https']);
+
   if (okStatus && isValidUrl) {
     const urlResponse = { original_url: undefined, short_url: undefined };
     urlResponse.original_url = req.body.url;
